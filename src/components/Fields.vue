@@ -153,12 +153,12 @@
 <script>
 import store from "store2"
 export default {
+    //these parse and stringify because require turned all of my false into "false"
     data() {
         return {
-            d: require("../fields.json"),
+            d: JSON.parse(JSON.stringify(require("../fields.json"))),
             menu: false,
-            selectedData: [],
-            default: require("../fields.json")
+            default: JSON.parse(JSON.stringify(require("../fields.json")))
         }
     },
     methods: {
@@ -174,26 +174,14 @@ export default {
             store('data', this.$root.reports);
             this.d = JSON.parse(JSON.stringify(this["default"]));
             this.$loading.toggle('Attempting to send...');
-            this.$http.post('', this.$root.reports, { timeout: 3000 }).then((function() {
+            this.$http.post('/api', this.$root.reports, { timeout: 3000 }).then((function() {
                 this.$loading.toggle();
                 this.$root.clear();
-                this.$alert({ message: 'Form Submitted', title: '😃', okText: 'Okay' });
+                this.$alert({ message: 'Form Submitted', title: ':D', okText: 'Okay' });
             }), function() {
                 this.$loading.toggle();
-                this.$alert({ message: 'Form saved. There are now ' + this.$root.reports.length + ' forms saved', title: 'Could not Send', okText: 'Okay' });
+                this.$alert({ message: 'Form saved. There are now ' + this.$root.reports.length + ' forms saved', title: 'Could not Send', btns: [{text:'Okay'}]});
             });
-        },
-        remove: function(i) {
-            this.$root.reports.splice(i, 1)
-            store('data', this.$root.reports);
-            this.$toast({ position: 'bottom', message: 'Deleted report' });
-        },
-        deleteSelected: function() {
-            for (var i = this.selectedData.length - 1; i >= 0; i--) {
-                this.$root.reports.splice(this.selectedData[i]._id, 1)
-            }
-            store('data', this.$root.reports);
-            this.$toast({ position: 'bottom', message: 'Deleted reports' });
         }
     }
 }

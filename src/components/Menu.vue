@@ -13,14 +13,14 @@
             <cell>
                 Number of forms: {{$root.reports.length}}
             </cell>
-            <cell>
-                <btn v-if="$root.settings.password == auth" theme="default" block @click="viewData = true">VIEW DATA</btn>
+            <cell v-if="$root.settings.password == auth">
+                <btn theme="default" block @click="viewData = true">VIEW DATA</btn>
             </cell>
             <cell>
                 <input-text v-model="$root.settings.name" placeholder="Name" type="text" />
             </cell>
             <cell>
-                <btn block @click="save">SAVE $root.SETTINGS</btn>
+                <btn block @click="save">SAVE SETTINGS</btn>
             </cell>
             <cell>
                 <input-text v-model="$root.settings.password" placeholder="Password" type="password" />
@@ -40,7 +40,7 @@
                 <label class="checkbox checkbox-square">
                     <input type="checkbox" v-model="selectedData" class="checkbox-input" :value="{data: r, _id: i}">
                     <span class="checkbox-addon"><i class="fa fa-check"></i></span>
-                    <span class="checkbox-label">Team: {{d.team}}, Match: {{d.match}}</span>
+                    <span class="checkbox-label">Team: {{r.team}}, Match: {{r.match}}</span>
                 </label>
                 <icon name="trash" class="text-danger" size="lg" @click="remove(i)" slot="footer"></icon>
             </cell>
@@ -55,6 +55,7 @@ export default {
             menu: false,
             auth: atob('Ymx1ZWJhYmllc2FyZXVuaGVhbHRoeQ=='),
             viewData: false,
+            selectedData: [],
         }
     },
     methods: {
@@ -62,6 +63,18 @@ export default {
             store('settings', this.$root.settings);
             this.$toast({ position: 'bottom', message: 'Saved' });
         },
+        remove(i) {
+            this.$root.reports.splice(i, 1)
+            store('data', this.$root.reports);
+            this.$toast({ position: 'bottom', message: 'Deleted report' });
+        },
+        deleteSelected() {
+            for (var i = this.selectedData.length - 1; i >= 0; i--) {
+                this.$root.reports.splice(this.selectedData[i]._id, 1)
+            }
+            store('data', this.$root.reports);
+            this.$toast({ position: 'bottom', message: 'Deleted reports' });
+        }
     }
 }
 </script>

@@ -9,6 +9,11 @@
   },
   "dependencies": {
     "ajv": "^6.8.1",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "json2xls-xml": "0.0.14",
+    "moment": "^2.24.0",
     "store2": "^2.7.1",
     "vue": "^2.5.22",
     "vue-impression": "^0.16.2",
