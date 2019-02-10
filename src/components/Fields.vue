@@ -155,27 +155,23 @@ import store from "store2"
 export default {
     data() {
         return {
-            d: {},
-            default: {},
+            d: require("../fields.json"),
             menu: false,
             selectedData: [],
+            default: require("../fields.json")
         }
-    },
-    created: function() {
-        var self = this;
-        self.d = require("../fields.json")
-        this["default"] = JSON.parse(JSON.stringify(this.d));
     },
     methods: {
         submit: function() {
+            //I think I added this line so that the output CSV didn't have 1 and 0 as the output, and actual string instead
             for (var key in this.d) {
                 if (this.d.hasOwnProperty(key) && typeof(this.d[key]) === "boolean") {
-                    this.d[key] = this.d[key].toString()
+                    this.d[key] = this.d[key].toString() 
                 }
             }
+            this.d.name = this.$root.settings.name;
             this.$root.reports.push(this.d);
             store('data', this.$root.reports);
-            this.d.name = this.s.name;
             this.d = JSON.parse(JSON.stringify(this["default"]));
             this.$loading.toggle('Attempting to send...');
             this.$http.post('', this.$root.reports, { timeout: 3000 }).then((function() {
