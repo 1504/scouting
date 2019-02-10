@@ -11,7 +11,8 @@
     "ajv": "^6.8.1",
     "store2": "^2.7.1",
     "vue": "^2.5.22",
-    "vue-impression": "^0.16.2"
+    "vue-impression": "^0.16.2",
+    "vue-resource": "^1.5.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.7.1",

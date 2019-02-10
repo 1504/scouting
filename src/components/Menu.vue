@@ -1,14 +1,71 @@
 <template>
-	<div>
-		test
-	</div>
-	
+    <div>
+        <navbar>
+            <icon name="bars" size="lg" @click="menu = true"></icon>
+            <h4 slot="body">Scouting 2018</h4>
+            <icon name="edit" size="lg" @click="viewData = true" slot="footer"></icon>
+        </navbar>
+        <sidelip v-model="menu" class="text-center">
+            <group-title class="bg-primary" :style="{height: '8rem', padding: '2rem 1rem'}">
+                <h2>Scouting 2018</h2>
+                <h4>Created by Arham Jain</h4>
+            </group-title>
+            <cell>
+                Number of forms: {{$root.reports.length}}
+            </cell>
+            <cell>
+                <btn v-if="settings.password == auth" theme="default" block @click="viewData = true">VIEW DATA</btn>
+            </cell>
+            <cell>
+                <input-text v-model="settings.name" placeholder="Name" type="text" />
+            </cell>
+            <cell>
+                <btn block @click="save">SAVE SETTINGS</btn>
+            </cell>
+            <cell>
+                <input-text v-model="settings.password" placeholder="Password" type="password" />
+            </cell>
+            <group v-show="settings.password == auth">
+                <cell>
+                    <btn theme="secondary" block @click="$root.clear">CLEAR DATA</btn>
+                </cell>
+            </group>
+        </sidelip>
+        <slideup v-model="viewData">
+            <navbar theme="default">
+                <h4 slot="body">Data on Device</h4>
+            </navbar>
+            <btn block theme="secondary" @click="deleteSelected()">Delete Selected Reports</btn>
+            <cell v-for="(r,i) in $root.reports" :key="i">
+                <label class="checkbox checkbox-square">
+                    <input type="checkbox" v-model="selectedData" class="checkbox-input" :value="{data: r, _id: i}">
+                    <span class="checkbox-addon"><i class="fa fa-check"></i></span>
+                    <span class="checkbox-label">Team: {{d.team}}, Match: {{d.match}}</span>
+                </label>
+                <icon name="trash" class="text-danger" size="lg" @click="remove(i)" slot="footer"></icon>
+            </cell>
+        </slideup>
+    </div>
 </template>
-
 <script>
-
-
+import store from "store2"
 export default {
-  
+    data() {
+        return {
+            menu: false,
+            auth: atob('Ymx1ZWJhYmllc2FyZXVuaGVhbHRoeQ=='),
+            settings: store('settings') || {
+                password: '',
+                name: ''
+            },
+            viewData: false,
+        }
+    },
+    methods: {
+        save() {
+            store('settings', this.settings);
+            this.$toast({ position: 'bottom', message: 'Saved' });
+        },
+    }
 }
 </script>

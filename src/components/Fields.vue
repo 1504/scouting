@@ -1,52 +1,6 @@
 <template>
     <!-- MENU START -->
-    <div>
-        <sidelip v-model="menu" class="text-center">
-            <group-title class="bg-primary" :style="{height: '8rem', padding: '2rem 1rem'}">
-                <h2>Scouting 2018</h2>
-                <h4>Created by Arham Jain</h4>
-            </group-title>
-            <cell>
-                Number of forms: {{data.length}}
-            </cell>
-            <cell>
-                <btn v-if="s.password == auth" theme="default" block @click="viewData = true">VIEW DATA</btn>
-            </cell>
-            <cell>
-                <input-text v-model="s.name" placeholder="Name" type="text" />
-            </cell>
-            <cell>
-                <btn block @click="saveSettings">SAVE SETTINGS</btn>
-            </cell>
-            <cell>
-                <input-text v-model="s.password" placeholder="Password" type="password" />
-            </cell>
-            <group v-show="s.password == auth">
-                <cell>
-                    <btn theme="secondary" block @click="clear">CLEAR DATA</btn>
-                </cell>
-            </group>
-        </sidelip>
-        <slideup v-model="viewData">
-            <navbar theme="default">
-                <h4 slot="body">Data on Device</h4>
-                <icon name="qrcode" size="lg" @click="qr" slot="footer"></icon>
-            </navbar>
-            <btn block theme="secondary" @click="deleteSelected()">Delete Selected Reports</btn>
-            <cell v-for="(d,i) in data" :key="i">
-                <label class="checkbox checkbox-square">
-                    <input type="checkbox" v-model="selectedData" class="checkbox-input" :value="{data: d, _id: i}">
-                    <span class="checkbox-addon"><i class="fa fa-check"></i></span>
-                    <span class="checkbox-label">Team: {{d.team}}, Match: {{d.match}}</span>
-                </label>
-                <icon name="trash" class="text-danger" size="lg" @click="remove(i)" slot="footer"></icon>
-            </cell>
-        </slideup>
-        <navbar>
-            <icon name="bars" size="lg" @click="menu = true"></icon>
-            <h4 slot="body">Scouting 2018</h4>
-            <icon name="pencil-square-o" size="lg" @click="viewData = true" slot="footer"></icon>
-        </navbar>
+    <div>    
         <div class="group-title">Info</div>
         <group>
             <cell>
@@ -190,11 +144,6 @@
         <cell>
             <btn block size="lg" @click="submit">SUBMIT</btn>
         </cell>
-        <cell id="scanner"></cell>
-        <p id="scannedTextMemo"></p>
-        <group v-show="showQR">
-            <div id="qr"></div>
-        </group>
         <br>
         <!--<code>
             {{JSON.stringify(data)}}
@@ -208,29 +157,15 @@ export default {
         return {
             d: {},
             default: {},
-            data: [],
             menu: false,
-            viewData: false,
-            s: {},
-            showQR: false,
             selectedData: [],
-            auth: atob('Ymx1ZWJhYmllc2FyZXVuaGVhbHRoeQ==')
         }
     },
     created: function() {
         var self = this;
-        this.$http.get('/fields.json').then(function(resp) {
-            self.d = resp.body
-            //console.log(self.d)
-        }, function() {
-
-        });
+        self.d = require("../fields.json")
         this["default"] = JSON.parse(JSON.stringify(this.d));
-        this.data = store('data') || [];
-        this.s = store('settings') || {
-            password: '',
-            name: ''
-        };
+        this.$root.reports = store('data') || [];
     },
     methods: {
         submit: function() {
@@ -239,41 +174,32 @@ export default {
                     this.d[key] = this.d[key].toString()
                 }
             }
-            this.data.push(this.d);
-            store('data', this.data);
+            this.$root.reports.push(this.d);
+            store('data', this.$root.reports);
             this.d.name = this.s.name;
             this.d = JSON.parse(JSON.stringify(this["default"]));
             this.$loading.toggle('Attempting to send...');
-            this.$http.post('', this.data, { timeout: 3000 }).then((function() {
+            this.$http.post('', this.$root.reports, { timeout: 3000 }).then((function() {
                 this.$loading.toggle();
-                this.clear();
+                this.$root.clear();
                 this.$alert({ message: 'Form Submitted', title: ':D', okText: 'Okay' });
             }), function() {
                 this.$loading.toggle();
-                this.$alert({ message: 'Form saved. There are now ' + this.data.length + ' forms saved', title: 'Could not Send', okText: 'Okay' });
+                this.$alert({ message: 'Form saved. There are now ' + this.$root.reports.length + ' forms saved', title: 'Could not Send', okText: 'Okay' });
             });
         },
         remove: function(i) {
-            this.data.splice(i, 1)
-            store('data', this.data);
+            this.$root.reports.splice(i, 1)
+            store('data', this.$root.reports);
             this.$toast({ position: 'bottom', message: 'Deleted report' });
         },
         deleteSelected: function() {
             for (var i = this.selectedData.length - 1; i >= 0; i--) {
-                this.data.splice(this.selectedData[i]._id, 1)
+                this.$root.reports.splice(this.selectedData[i]._id, 1)
             }
-            store('data', this.data);
+            store('data', this.$root.reports);
             this.$toast({ position: 'bottom', message: 'Deleted reports' });
-        },
-        clear: function() {
-            store(false);
-            this.data = [];
-            this.$toast({ position: 'bottom', message: 'Stored Data Cleared' });
-        },
-        saveSettings: function() {
-            store('settings', this.s);
-            this.$toast({ position: 'bottom', message: 'Saved' });
-        },
+        }
     }
 }
 </script>

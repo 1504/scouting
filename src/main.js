@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueImpression from 'vue-impression';
+import VueResource from 'vue-resource';
 import 'vue-impression/dist/styles/index.scss';
 import '@fortawesome/fontawesome-free/css/all.css'
-Vue.use(VueImpression);
+import store from "store2"
+Vue.use(VueImpression)
+Vue.use(VueResource)
 Vue.config.productionTip = false
 const requireComponent = require.context(
     './components', // The relative path of the components folder
@@ -18,6 +21,13 @@ requireComponent.keys().forEach(fileName => {
 new Vue({
     render: h => h(App),
     data: { //global data store
-        user: 'load',
+        reports: [],
     },
+    methods: {
+        clear() {
+            store(false);
+            this.$root.reports = [];
+            this.$toast({ position: 'bottom', message: 'Stored Data Cleared' });
+        },
+    }
 }).$mount('#app')
