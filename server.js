@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({
     limit: '100mb'
 }));
 app.use(cors());
-app.use('/', express.static(__dirname + '/'));
+app.use('/', express.static(__dirname + '/dist'));
 fs.writeFile(fileName + ".xlsx", j2xls(data), 'binary', function(err) {
     error(err);
 });
