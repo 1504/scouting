@@ -9,12 +9,12 @@ var address, os = require('os'),
     ifaces = os.networkInterfaces();
 var portNum = 80;
 var data = [];
-var dir = './reports';
+var dir = './reports/';
 if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
 }
 var fileName = dir + moment().format("M;D;YYYY;H;mm;ss");
-app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.json({ limit: '1000mb' }));
 app.use(bodyParser.urlencoded({
     extended: true,
     limit: '100mb'
