@@ -21,7 +21,11 @@ requireComponent.keys().forEach(fileName => {
 new Vue({
     render: h => h(App),
     data: { //global data store
-        reports: [],
+        reports: store('data') || [],
+        settings: store('settings') || {
+            password: '',
+            name: ''
+        },
     },
     methods: {
         clear() {

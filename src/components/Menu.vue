@@ -14,18 +14,18 @@
                 Number of forms: {{$root.reports.length}}
             </cell>
             <cell>
-                <btn v-if="settings.password == auth" theme="default" block @click="viewData = true">VIEW DATA</btn>
+                <btn v-if="$root.settings.password == auth" theme="default" block @click="viewData = true">VIEW DATA</btn>
             </cell>
             <cell>
-                <input-text v-model="settings.name" placeholder="Name" type="text" />
+                <input-text v-model="$root.settings.name" placeholder="Name" type="text" />
             </cell>
             <cell>
-                <btn block @click="save">SAVE SETTINGS</btn>
+                <btn block @click="save">SAVE $root.SETTINGS</btn>
             </cell>
             <cell>
-                <input-text v-model="settings.password" placeholder="Password" type="password" />
+                <input-text v-model="$root.settings.password" placeholder="Password" type="password" />
             </cell>
-            <group v-show="settings.password == auth">
+            <group v-show="$root.settings.password == auth">
                 <cell>
                     <btn theme="secondary" block @click="$root.clear">CLEAR DATA</btn>
                 </cell>
@@ -54,16 +54,12 @@ export default {
         return {
             menu: false,
             auth: atob('Ymx1ZWJhYmllc2FyZXVuaGVhbHRoeQ=='),
-            settings: store('settings') || {
-                password: '',
-                name: ''
-            },
             viewData: false,
         }
     },
     methods: {
         save() {
-            store('settings', this.settings);
+            store('settings', this.$root.settings);
             this.$toast({ position: 'bottom', message: 'Saved' });
         },
     }

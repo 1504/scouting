@@ -165,7 +165,6 @@ export default {
         var self = this;
         self.d = require("../fields.json")
         this["default"] = JSON.parse(JSON.stringify(this.d));
-        this.$root.reports = store('data') || [];
     },
     methods: {
         submit: function() {
@@ -182,7 +181,7 @@ export default {
             this.$http.post('', this.$root.reports, { timeout: 3000 }).then((function() {
                 this.$loading.toggle();
                 this.$root.clear();
-                this.$alert({ message: 'Form Submitted', title: ':D', okText: 'Okay' });
+                this.$alert({ message: 'Form Submitted', title: '😃', okText: 'Okay' });
             }), function() {
                 this.$loading.toggle();
                 this.$alert({ message: 'Form saved. There are now ' + this.$root.reports.length + ' forms saved', title: 'Could not Send', okText: 'Okay' });
