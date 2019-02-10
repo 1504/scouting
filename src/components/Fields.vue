@@ -4,7 +4,7 @@
         <sidelip v-model="menu" class="text-center">
             <group-title class="bg-primary" :style="{height: '8rem', padding: '2rem 1rem'}">
                 <h2>Scouting 2018</h2>
-                <h4>Made by Ajusa</h4>
+                <h4>Created by Arham Jain</h4>
             </group-title>
             <cell>
                 Number of forms: {{data.length}}
@@ -33,7 +33,7 @@
                 <icon name="qrcode" size="lg" @click="qr" slot="footer"></icon>
             </navbar>
             <btn block theme="secondary" @click="deleteSelected()">Delete Selected Reports</btn>
-            <cell v-for="(d,i) in data">
+            <cell v-for="(d,i) in data" :key="i">
                 <label class="checkbox checkbox-square">
                     <input type="checkbox" v-model="selectedData" class="checkbox-input" :value="{data: d, _id: i}">
                     <span class="checkbox-addon"><i class="fa fa-check"></i></span>
@@ -43,7 +43,7 @@
             </cell>
         </slideup>
         <navbar>
-            <icon name="navicon" size="lg" @click="menu = true"></icon>
+            <icon name="bars" size="lg" @click="menu = true"></icon>
             <h4 slot="body">Scouting 2018</h4>
             <icon name="pencil-square-o" size="lg" @click="viewData = true" slot="footer"></icon>
         </navbar>
@@ -202,6 +202,7 @@
     </div>
 </template>
 <script>
+import store from "store2"
 export default {
     data() {
         return {
@@ -220,7 +221,7 @@ export default {
         var self = this;
         this.$http.get('/fields.json').then(function(resp) {
             self.d = resp.body
-            console.log(self.d)
+            //console.log(self.d)
         }, function() {
 
         });
@@ -273,41 +274,6 @@ export default {
             store('settings', this.s);
             this.$toast({ position: 'bottom', message: 'Saved' });
         },
-        qr: function() {
-            var data = []
-            for (var i = this.selectedData.length - 1; i >= 0; i--) {
-                data.push(this.selectedData[i].data)
-            }
-            this.showQR = true;
-            var str = ""
-            for (var i = 0; i < data.length; i++) {
-                var arr = Object.keys(data[i]).map(function(k) { return data[i][k] });
-                if (i == 0) {
-                    str += arr.join("|")
-                } else {
-                    str += arr.join("|") + "\n"
-                }
-            }
-            createQR(str)
-            console.log(str)
-        },
-        decodeQR: function(str) {
-            arr = str.split("\n");
-            for (var i = arr.length - 1; i >= 0; i--) {
-                var obj = {}
-                var report = arr[i].split("|")
-                var keys = Object.keys(this.d)
-                for (var i = report.length - 1; i >= 0; i--) {
-                    obj[keys[i]] = report[i]
-                }
-                this.data.push(obj);
-                store('data', this.data);
-                this.$toast({ position: 'bottom', message: 'Scouting Data added to Device' });
-            }
-        },
-        onDecode: function(data) {
-            console.log(data)
-        }
     }
 }
 </script>
