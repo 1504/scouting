@@ -69,7 +69,13 @@
     <group-title>Teleop</group-title>
     <group>
       <cell>
-        <inline-selector v-model="d.pickup_method" multiple>Cube collection: &nbsp;
+        <inline-selector v-model="d.hatch_pickup_method" multiple>Hatch collection: &nbsp;
+          <inline-selector-option value="loadingstation">Station</inline-selector-option>
+          <inline-selector-option value="floor">Floor</inline-selector-option>
+        </inline-selector>
+      </cell>
+      <cell>
+        <inline-selector v-model="d.cargo_pickup_method" multiple>Cargo collection: &nbsp;
           <inline-selector-option value="loadingstation">Station</inline-selector-option>
           <inline-selector-option value="floor">Floor</inline-selector-option>
         </inline-selector>
