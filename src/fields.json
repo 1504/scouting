@@ -10,8 +10,6 @@
 	"a_rocket_hatches": 0,
 	"a_rocket_cargo": 0,
 	"drive_mode": "manual",
-	"a_drive_quality": "",
-	"a_place_quality": 5,
 	"hatch_pickup_method": "",
 	"cargo_pickup_method": "",
 	"shuttle_hatches": 0,

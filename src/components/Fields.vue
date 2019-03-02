@@ -33,6 +33,7 @@
         <inline-selector v-model="d.a_line_cross">Movement: &nbsp;
           <inline-selector-option value="moves">Moves</inline-selector-option>
           <inline-selector-option value="cross">Crosses Line</inline-selector-option>
+          <inline-selector-option value="no_movement">The Big Fail</inline-selector-option>
         </inline-selector>
       </cell>
       <cell>
@@ -59,12 +60,14 @@
       <cell>Rocket Cargo &nbsp;
         <input-number :min="0" v-model="d.a_rocket_cargo" :max="20"/>
       </cell>
+      <!--
       <cell>Auton placing quality (1-10) &nbsp;
         <input-number :min="0" v-model="d.a_place_quality" :max="10"/>
       </cell>
       <cell>Auton drive quality (1-10) &nbsp;
         <input-number :min="0" v-model="d.a_drive_quality" :max="10"/>
       </cell>
+      -->
     </group>
     <group-title>Teleop</group-title>
     <group>
