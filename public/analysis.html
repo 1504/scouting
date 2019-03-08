@@ -30,7 +30,7 @@
                                                 <h3 class="headline mb-0 text-sm-left"> Team {{team.team}}</h3> <br>
                                                 <p class="text-sm-left"> Balls Delivered: {{t_balls(team.team)}} </p>
                                                 <p class="text-sm-left"> Hatches Delivered: {{t_hatches(team.team)}} </p>
-                                                <p class="text-sm-left"> Hang Rate: {{e_hang(team.team)}} </p>
+                                                <p class="text-sm-left">{{e_hang(team.team)}} </p>
                                                 <h3 class="text-sm-left">Score: {team.score}</h3> <br>
                                             </div>
                                         </v-card-title>
@@ -44,7 +44,7 @@
 
                                                     <template v-slot:activator="{ on }">
                                                         <v-flex align-right>
-                                                            <v-btn align-right color="orange" dark v-on="on" @onclick="greet()">
+                                                            <v-btn align-right color="orange" dark v-on="on" v-on:click="dt = team.team">
                                                                 Details
                                                             </v-btn>
                                                         </v-flex>
@@ -52,40 +52,40 @@
 
                                                     <v-card>
                                                         <v-card-title class="headline" primary-title>
-                                                                Team {{team.team}}
+                                                                Team {{dt}}
                                                         </v-card-title>
 
                                                         <v-card-text>
                                                             <h3>Darude Sandstorm</h3> <br>
                                                             <p class="text-sm-left"> Sandstorm Method:
-                                                                {{s_mode(team.team)}} </p>
-                                                            <p class="text-sm-left"> Crosses Line: {{s_cross(team.team)}}
+                                                                {{s_mode(dt)}} </p>
+                                                            <p class="text-sm-left"> Crosses Line: {{s_cross(dt)}}
                                                             </p>
-                                                            <p class="text-sm-left"> Start Cargo: {{s_cargo(team.team)}} </p>
+                                                            <p class="text-sm-left"> Start Cargo: {{s_cargo(dt)}} </p>
                                                             <p class="text-sm-left"> Cargo Hatches:
-                                                                    {{s_hatches(team.team)}} </p>
-                                                            <p class="text-sm-left"> Cargo Balls: {{s_balls(team.team)}} </p>
+                                                                    {{s_hatches(dt)}} </p>
+                                                            <p class="text-sm-left"> Cargo Balls: {{s_balls(dt)}} </p>
                                                             <p class="text-sm-left"> Rocket Hatches:
-                                                                    {{sr_hatches(team.team)}} </p>
-                                                            <p class="text-sm-left"> Rocket Balls: {{sr_balls(team.team)}} </p>
+                                                                    {{sr_hatches(dt)}} </p>
+                                                            <p class="text-sm-left"> Rocket Balls: {{sr_balls(dt)}} </p>
                                                             <br>
                                                             <h3>Teleop</h3> <br>
                                                             <p class="text-sm-left"> Cargo Hatches:
-                                                                    {{c_hatches(team.team)}} </p>
-                                                            <p class="text-sm-left"> Cargo Balls: {{c_balls(team.team)}} </p>
+                                                                    {{c_hatches(dt)}} </p>
+                                                            <p class="text-sm-left"> Cargo Balls: {{c_balls(dt)}} </p>
                                                             <p class="text-sm-left"> Rocket Hatches:
-                                                                    {{cr_hatches(team.team)}} </p>
-                                                            <p class="text-sm-left"> Rocket Balls: {{cr_balls(team.team)}} </p>
+                                                                    {{cr_hatches(dt)}} </p>
+                                                            <p class="text-sm-left"> Rocket Balls: {{cr_balls(dt)}} </p>
                                                             <p class="text-sm-left"> Cargo Failed:
-                                                                    {{cf_balls(team.team)}} </p>
-                                                            <p class="text-sm-left"> Hatch Failed: {{cf_hatches(team.team)}}
+                                                                    {{cf_balls(dt)}} </p>
+                                                            <p class="text-sm-left"> Hatch Failed: {{cf_hatches(dt)}}
                                                             </p>
-                                                            <p class="text-sm-left"> Defense: {{c_def(team.team)}} </p>
+                                                            <p class="text-sm-left"> Defense: {{c_def(dt)}} </p>
                                                             
                                                             <br>
                                                             <h3>End Game</h3> <br>
-                                                            <p class="text-sm-left"> Hang Rate: {{e_hang(team.team)}} </p>
-                                                            <p class="text-sm-left"> Drivers are {{e_driver(team.team)}} </p>
+                                                            <p class="text-sm-left"> Climb Rate: {{e_hang(dt)}} </p>
+                                                            <p class="text-sm-left"> Drivers are {{e_driver(dt)}} </p>
                                                             <h3 class="text-sm-left">Score: {team.score}</h3> <br>
                                                         </v-card-text>
 
@@ -93,8 +93,8 @@
 
                                                         <v-card-actions>
                                                             <v-spacer></v-spacer>
-                                                            <v-btn color="primary" flat @click="dialog = false">
-
+                                                            <v-btn color="orange" flat @click="dialog = false">
+                                                                Close
                                                             </v-btn>
                                                         </v-card-actions>
                                                     </v-card>
@@ -120,6 +120,7 @@
             
             data() {
                 return {
+                    dt: "default dance",
                     dialog: false,
                     scouter: [{
                             "match": "1",
@@ -133,8 +134,8 @@
                             "a_rocket_hatches": 0,
                             "a_rocket_cargo": 0,
                             "drive_mode": "manual",
-                            "a_drive_quality": "",
-                            "a_place_quality": 5,
+                           // "a_drive_quality": "",
+                           // "a_place_quality": 5,
                             "hatch_pickup_method": "",
                             "cargo_pickup_method": "",
                             "shuttle_hatches": 0,
@@ -145,12 +146,12 @@
                             "failed_hatches": 0,
                             "defensive": "false",
                             "def_effective": "false",
-                            "hang": "",
+                            "hang": "Success",
                             "hang_level": "",
-                            "time_to_hang": 5,
-                            "endrobothangtotal": 1,
+                           // "time_to_hang": 5,
+                           // "endrobothangtotal": 1,
                             "foul_number": 0,
-                            "foul_type": "",
+                           // "foul_type": "",
                             "driver": "Good",
                             "comments": "Good",
                             "name": ""
@@ -179,7 +180,7 @@
                             "failed_hatches": 0,
                             "defensive": "false",
                             "def_effective": "false",
-                            "hang": "",
+                            "hang": "Success",
                             "hang_level": "",
                             "time_to_hang": 0,
                             "endrobothangtotal": 0,
@@ -545,12 +546,17 @@
                                 s_cross = s_cross + 1
                                 count = count + 1
                             }
-                            count = count + 1
+                            if(this.scouter[i].hang == "Moves")
+                            {
+                                s_cross = s_cross + 0
+                                count = count + 1
+                            }
+                            
                             
                         }
                     }
                     
-                    return "Hangs " + ((s_cross/count)*100) + "% of the time "
+                    return "Climbs " + ((s_cross/count)*100) + "% of the time "
                     
                 },
                 e_driver: function (team) {
