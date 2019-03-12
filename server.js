@@ -10,15 +10,37 @@ var address, os = require('os'),
 var portNum = 80;
 var data = [];
 var dir = './reports/';
-if (!fs.existsSync(dir)){
+if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
 var fileName = dir + moment().format("M;D;YYYY;H;mm;ss");
+fs.readdirSync(dir).forEach((file) => {
+    // you may want to filter these by extension, etc. to make sure they are JSON files
+    if (file.includes(".json") && !file.includes(fileName)) {
+        newRecords(JSON.parse(fs.readFileSync(dir + file, 'utf8')))
+    }
+
+})
+
 app.use(bodyParser.json({ limit: '1000mb' }));
 app.use(bodyParser.urlencoded({
     extended: true,
     limit: '100mb'
 }));
+
+function newRecords(records) {
+    for (var i = records.length - 1; i >= 0; i--) {
+        convert(records[i])
+        data.push(records[i])
+        console.log(records[i])
+    }
+    fs.writeFile(fileName + ".xlsx", j2xls(data), 'binary', function(err) {
+        error(err);
+    });
+    fs.writeFile(fileName + ".json", JSON.stringify(data, null, 4), 'binary', function(err) {
+        error(err);
+    });
+}
 app.use(cors());
 app.use('/', express.static(__dirname + '/dist'));
 fs.writeFile(fileName + ".xlsx", j2xls(data), 'binary', function(err) {
@@ -28,17 +50,7 @@ fs.writeFile(fileName + ".json", JSON.stringify(data, null, 4), 'binary', functi
     error(err);
 });
 app.post('/api', function(req, res) {
-    for (var i = req.body.length - 1; i >= 0; i--) {
-        convert(req.body[i])
-        data.push(req.body[i])
-        console.log(req.body[i])
-    }
-    fs.writeFile(fileName + ".xlsx", j2xls(data), 'binary', function(err) {
-        error(err);
-    });
-    fs.writeFile(fileName + ".json", JSON.stringify(data, null, 4), 'binary', function(err) {
-        error(err);
-    });
+    newRecords(req.body)
     res.sendStatus(200);
 });
 app.get('/api', function(req, res) {
@@ -67,7 +79,6 @@ function convert(obj) { //turns object.arrays into strings
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
             if (obj[key] instanceof Array) {
-
                 obj[key] = obj[key].toString()
             }
         }
