@@ -18,6 +18,7 @@
     "typescript": "^3.3.3333",
     "vue": "^2.6.8",
     "vue-impression": "^0.16.2",
+    "vue-read-file": "^1.0.2",
     "vue-resource": "^1.5.1"
   },
   "devDependencies": {

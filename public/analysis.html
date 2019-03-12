@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-    <script type="text/javascript" src="../reports/scout.json"></script>
-
 </head>
+
+
 
 <body>
     <div id="app">
@@ -19,6 +19,7 @@
                     <center>
                         <h1 style="color:yellow;">1504 Analysis</h1>
                     </center>
+
                     <template>
                         <v-container grid-list-md text-xs-center>
                             <v-layout row wrap>
@@ -28,79 +29,65 @@
                                         <v-card-title primary-title>
                                             <div>
                                                 <h3 class="headline mb-0 text-sm-left"> Team {{team.team}}</h3> <br>
-                                                <p class="text-sm-left"> Balls Delivered: {{t_balls(team.team)}} </p>
-                                                <p class="text-sm-left"> Hatches Delivered: {{t_hatches(team.team)}} </p>
+                                                <p class="text-sm-left"> Balls Delivered: {{t_balls(team.team) +
+                                                    cr_balls(team.team)}} </p>
+                                                <p class="text-sm-left"> Hatches Delivered: {{t_hatches(team.team) +
+                                                    cr_hatches(team.team)}}
+                                                </p>
                                                 <p class="text-sm-left">{{e_hang(team.team)}} </p>
-                                                <h3 class="text-sm-left">Score: {team.score}</h3> <br>
+                                                <h3 class="text-sm-left">Score: {{t_balls(team.team) +
+                                                    (2*cr_balls(team.team))+t_hatches(team.team) +
+                                                    (2*cr_hatches(team.team)) - cf_balls(team.team) -
+                                                    cf_hatches(team.team)}}</h3> <br>
                                             </div>
                                         </v-card-title>
+                                        <v-card-text>
+                                            <hr><br>
+                                            <h3>Darude Sandstorm</h3> <br>
+                                            <p class="text-sm-left"> Sandstorm Method:
+                                                {{s_mode(team.team)}} </p>
+                                            <p class="text-sm-left"> Crosses Line: {{s_cross(team.team)}}
+                                            </p>
+                                            <p class="text-sm-left"> Start Cargo: {{s_cargo(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Hatches:
+                                                {{s_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Balls: {{s_balls(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Hatches:
+                                                {{sr_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Balls: {{sr_balls(team.team)}} </p>
+                                            <br>
+                                            <h3>Teleop</h3> <br>
+                                            <p class="text-sm-left"> Cargo Hatches:
+                                                {{c_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Balls: {{c_balls(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Hatches:
+                                                {{cr_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Balls: {{cr_balls(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Failed:
+                                                {{((cf_balls(team.team)/(t_balls(team.team)+cr_balls(team.team)))*100)}}%
+                                            </p>
+                                            <p class="text-sm-left"> Hatch Failed:
+                                                {{((cf_hatches(team.team)/(t_hatches(team.team)+cr_hatches(team.team)))*100)}}%
+                                            </p>
+                                            <p class="text-sm-left"> {{c_def(team.team)}} </p>
+
+                                            <br>
+                                            <h3>End Game</h3> <br>
+                                            <p class="text-sm-left"> Climb Rate: {{e_hang(team.team)}} </p>
+                                            <p class="text-sm-left"> Drivers are {{e_driver(team.team)}} </p>
+                                            <h3 class="text-sm-left">Score: {{t_balls(team.team) +
+                                                (2*cr_balls(team.team))+t_hatches(team.team) +
+                                                (2*cr_hatches(team.team)) - cf_balls(team.team) -
+                                                cf_hatches(team.team)}}</h3>
+                                            <br>
+
+                                        </v-card-text>
 
 
 
 
-                                        <template>
-                                            <div class="text-xs-center">
-                                                <v-dialog v-model="dialog" width="500">
 
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-flex align-right>
-                                                            <v-btn align-right color="orange" dark v-on="on" v-on:click="dt = team.team">
-                                                                Details
-                                                            </v-btn>
-                                                        </v-flex>
-                                                    </template>
 
-                                                    <v-card>
-                                                        <v-card-title class="headline" primary-title>
-                                                                Team {{dt}}
-                                                        </v-card-title>
-
-                                                        <v-card-text>
-                                                            <h3>Darude Sandstorm</h3> <br>
-                                                            <p class="text-sm-left"> Sandstorm Method:
-                                                                {{s_mode(dt)}} </p>
-                                                            <p class="text-sm-left"> Crosses Line: {{s_cross(dt)}}
-                                                            </p>
-                                                            <p class="text-sm-left"> Start Cargo: {{s_cargo(dt)}} </p>
-                                                            <p class="text-sm-left"> Cargo Hatches:
-                                                                    {{s_hatches(dt)}} </p>
-                                                            <p class="text-sm-left"> Cargo Balls: {{s_balls(dt)}} </p>
-                                                            <p class="text-sm-left"> Rocket Hatches:
-                                                                    {{sr_hatches(dt)}} </p>
-                                                            <p class="text-sm-left"> Rocket Balls: {{sr_balls(dt)}} </p>
-                                                            <br>
-                                                            <h3>Teleop</h3> <br>
-                                                            <p class="text-sm-left"> Cargo Hatches:
-                                                                    {{c_hatches(dt)}} </p>
-                                                            <p class="text-sm-left"> Cargo Balls: {{c_balls(dt)}} </p>
-                                                            <p class="text-sm-left"> Rocket Hatches:
-                                                                    {{cr_hatches(dt)}} </p>
-                                                            <p class="text-sm-left"> Rocket Balls: {{cr_balls(dt)}} </p>
-                                                            <p class="text-sm-left"> Cargo Failed:
-                                                                    {{cf_balls(dt)}} </p>
-                                                            <p class="text-sm-left"> Hatch Failed: {{cf_hatches(dt)}}
-                                                            </p>
-                                                            <p class="text-sm-left"> Defense: {{c_def(dt)}} </p>
-                                                            
-                                                            <br>
-                                                            <h3>End Game</h3> <br>
-                                                            <p class="text-sm-left"> Climb Rate: {{e_hang(dt)}} </p>
-                                                            <p class="text-sm-left"> Drivers are {{e_driver(dt)}} </p>
-                                                            <h3 class="text-sm-left">Score: {team.score}</h3> <br>
-                                                        </v-card-text>
-
-                                                        <v-divider></v-divider>
-
-                                                        <v-card-actions>
-                                                            <v-spacer></v-spacer>
-                                                            <v-btn color="orange" flat @click="dialog = false">
-                                                                Close
-                                                            </v-btn>
-                                                        </v-card-actions>
-                                                    </v-card>
-                                                </v-dialog>
-                                            </div>
-                                        </template>
                                     </v-card>
 
                                 </v-flex>
@@ -112,502 +99,291 @@
         </v-app>
     </div>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.0/vue-resource.js"></script>
     <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
 
     <script>
-        var vm = new Vue({
+        Vue.use('vue-resource');
+        new Vue({
             el: '#app',
-            
+            created: function () {
+                this.teamlist();
+                var self = this;
+                this.$http.get('/api').then(function (response) {
+                    console.log(response.body)
+                    var text = JSON.stringify(response.body)
+                    self.scouter = JSON.parse(text)
+                });
+
+                console.log(this.scouter);
+                setInterval(this.update, 3000);
+            },
             data() {
                 return {
-                    dt: "default dance",
                     dialog: false,
-                    scouter: [{
-                            "match": "1",
-                            "team": "240",
-                            "color": "red",
-                            "a_start_pos": "",
-                            "a_line_cross": "Crosses Line",
-                            "a_start_object": "Hatch Panel",
-                            "a_shuttle_hatches": 1,
-                            "a_shuttle_cargo": 50,
-                            "a_rocket_hatches": 0,
-                            "a_rocket_cargo": 0,
-                            "drive_mode": "manual",
-                           // "a_drive_quality": "",
-                           // "a_place_quality": 5,
-                            "hatch_pickup_method": "",
-                            "cargo_pickup_method": "",
-                            "shuttle_hatches": 0,
-                            "shuttle_cargo": 0,
-                            "rocket_hatches": 0,
-                            "rocket_cargo": 0,
-                            "failed_cargo": 0,
-                            "failed_hatches": 0,
-                            "defensive": "false",
-                            "def_effective": "false",
-                            "hang": "Success",
-                            "hang_level": "",
-                           // "time_to_hang": 5,
-                           // "endrobothangtotal": 1,
-                            "foul_number": 0,
-                           // "foul_type": "",
-                            "driver": "Good",
-                            "comments": "Good",
-                            "name": ""
-                        },
-                        {
-                            "match": "9999",
-                            "team": "247",
-                            "color": "blue",
-                            "a_start_pos": "middle",
-                            "a_line_cross": "cross",
-                            "a_start_object": "hatch",
-                            "a_shuttle_hatches": 2,
-                            "a_shuttle_cargo": 2,
-                            "a_rocket_hatches": 2,
-                            "a_rocket_cargo": 2,
-                            "drive_mode": "manual",
-                            "a_drive_quality": "11",
-                            "a_place_quality": 7,
-                            "hatch_pickup_method": "floor",
-                            "cargo_pickup_method": "loadingstation",
-                            "shuttle_hatches": 0,
-                            "shuttle_cargo": 0,
-                            "rocket_hatches": 0,
-                            "rocket_cargo": 0,
-                            "failed_cargo": 0,
-                            "failed_hatches": 0,
-                            "defensive": "false",
-                            "def_effective": "false",
-                            "hang": "Success",
-                            "hang_level": "",
-                            "time_to_hang": 0,
-                            "endrobothangtotal": 0,
-                            "foul_number": 0,
-                            "foul_type": "",
-                            "driver": "mid",
-                            "comments": "",
-                            "name": ""
-                        }
-                    ],
+                    value: "",
+                    scouter: [],
                     items: [{
-                            team: '240'
-                        },
-                        {
-                            team: '247'
-                        },
-                        {
-                            team: '313'
-                        },
-                        {
-                            team: '862'
-                        },
-                        {
-                            team: '1025'
-                        },
-                        {
-                            team: '1076'
-                        },
-                        {
-                            team: '1502'
-                        },
-                        {
-                            team: '1504'
-                        },
-                        {
-                            team: '2137'
-                        },
-                        {
-                            team: '2832'
-                        },
-                        {
-                            team: '3656'
-                        },
-                        {
-                            team: '3770'
-                        },
-                        {
-                            team: '3773'
-                        },
-                        {
-                            team: '3875'
-                        },
-                        {
-                            team: '4395'
-                        },
-                        {
-                            team: '4405'
-                        },
-                        {
-                            team: '4840'
-                        },
-                        {
-                            team: '5050'
-                        },
-                        {
-                            team: '5066'
-                        },
-                        {
-                            team: '5225'
-                        },
-                        {
-                            team: '5530'
-                        },
-                        {
-                            team: '5567'
-                        },
-                        {
-                            team: '5619'
-                        },
-                        {
-                            team: '5915'
-                        },
-                        {
-                            team: '6013'
-                        },
-                        {
-                            team: '6057'
-                        },
-                        {
-                            team: '6089'
-                        },
-                        {
-                            team: '6101'
-                        },
-                        {
-                            team: '6116'
-                        },
-                        {
-                            team: '6152'
-                        },
-                        {
-                            team: '6583'
-                        },
-                        {
-                            team: '6615'
-                        },
-                        {
-                            team: '6861'
-                        },
-                        {
-                            team: '6914'
-                        },
-                        {
-                            team: '6954'
-                        },
-                        {
-                            team: '7056'
-                        },
-                        {
-                            team: '7175'
-                        },
-                        {
-                            team: '7211'
-                        },
-                        {
-                            team: '7656'
-                        },
-                        {
-                            team: '7859'
-                        }
-
-                    ]
+                        team: "oh yeah yeah"
+                    }]
                 }
             },
             methods: {
+                update: function () {
+                    this.teamlist();
+                    this.$http.get('/api').then(function (response) {
+                        var text = JSON.stringify(response.body)
+                        self.scouter = JSON.parse(text)
+                        console.log(self.scouter)
+                    });
+                    
+                },
                 s_balls: function (team) {
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].a_shuttle_cargo
                             count = count + 1
                         }
                     }
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count
+
                 },
                 s_mode: function (team) {
                     var s_mode = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
-                            if(this.scouter[i].drive_mode == "manual")
-                            {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].drive_mode == "manual") {
                                 s_mode = s_mode + 1
                                 count = count + 1
                             }
-                            if(this.scouter[i].drive_mode == "Autonymous")
-                            {
+                            if (this.scouter[i].drive_mode == "Autonymous") {
                                 s_mode = s_mode + 0
                                 count = count + 1
                             }
-                            
+
                         }
                     }
-                    
-                    return ((s_mode/count)*100) + "% Manual & " + ((1 - (s_mode/count))*100) + "% Autonomous"
-                    
+
+                    return ((s_mode / count) * 100) + "% Manual & " + ((1 - (s_mode / count)) * 100) +
+                        "% Autonomous"
+
                 },
                 s_cross: function (team) {
                     var s_cross = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
-                            if(this.scouter[i].a_line_cross == "Crosses Line")
-                            {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].a_line_cross == "Crosses Line") {
                                 s_cross = s_cross + 1
                                 count = count + 1
                             }
-                            if(this.scouter[i].a_line_cross == "Moves")
-                            {
+                            if (this.scouter[i].a_line_cross == "Moves") {
                                 s_cross = s_cross + 0
                                 count = count + 1
                             }
-                            
+
                         }
                     }
-                    
-                    return "Crosses " + ((s_cross/count)*100) + "% of the time "
-                    
+
+                    return "Crosses " + ((s_cross / count) * 100) + "% of the time "
+
                 },
                 s_cargo: function (team) {
                     var s_cargo = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
-                            if(this.scouter[i].a_start_object == "Hatch Panel")
-                            {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].a_start_object == "Hatch Panel") {
                                 s_cargo = s_cargo + 1
                                 count = count + 1
                             }
-                            if(this.scouter[i].a_start_object == "Cargo Ball")
-                            {
+                            if (this.scouter[i].a_start_object == "Cargo Ball") {
                                 s_cargo = s_cargo + 0
                                 count = count + 1
                             }
-                            
+
                         }
                     }
-                    
-                    return ((s_cargo/count)*100) + "% Hatch Panels & " + ((1 - (s_cargo/count))*100) + "% Cargo Ball"
-                    
+
+                    return ((s_cargo / count) * 100) + "% Hatch Panels & " + ((1 - (s_cargo / count)) * 100) +
+                        "% Cargo Ball"
+
                 },
                 s_hatches: function (team) {
                     var s_hatch = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_hatch = s_hatch + this.scouter[i].a_shuttle_hatches
                             count = count + 1
                         }
                     }
-                    
-                    return s_hatch/count
-                    
+
+                    return s_hatch / count
+
                 },
                 sr_hatches: function (team) {
                     var s_hatch = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_hatch = s_hatch + this.scouter[i].a_rocket_hatches
                             count = count + 1
                         }
                     }
-                    
-                    return s_hatch/count
-                    
+
+                    return s_hatch / count
+
                 },
                 sr_balls: function (team) {
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].a_rocket_cargo
                             count = count + 1
                         }
                     }
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count
+
                 },
                 c_balls: function (team) {
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].shuttle_cargo
                             count = count + 1
                         }
                     }
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count
+
                 },
                 c_hatches: function (team) {
                     var s_hatch = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_hatch = s_hatch + this.scouter[i].shuttle_hatches
                             count = count + 1
                         }
                     }
-                    
-                    return s_hatch/count
-                    
+
+                    return s_hatch / count
+
                 },
                 cr_balls: function (team) {
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].rocket_cargo
                             count = count + 1
                         }
                     }
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count
+
                 },
                 cr_hatches: function (team) {
                     var s_hatch = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_hatch = s_hatch + this.scouter[i].rocket_hatches
                             count = count + 1
                         }
                     }
-                    
-                    return s_hatch/count
-                    
+
+                    return s_hatch / count
+
                 },
                 c_def: function (team) {
                     var s_cross = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
-                            if(this.scouter[i].def_effective == "true")
-                            {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].def_effective == "true") {
                                 s_cross = s_cross + 1
                                 count = count + 1
                             }
-                            if(this.scouter[i].def_effective == "false")
-                            {
+                            if (this.scouter[i].def_effective == "false") {
                                 s_cross = s_cross + 0
                                 count = count + 1
                             }
-                            
+
                         }
                     }
-                    
-                    
-                        return "Defense effective " + ((s_cross/count)*100) + "% of the time "
-                   
-                    
+
+
+                    return "Defense effective " + ((s_cross / count) * 100) + "% of the time "
+
+
                 },
                 e_hang: function (team) {
                     var s_cross = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
-                            if(this.scouter[i].hang == "Success")
-                            {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].hang == "success") {
                                 s_cross = s_cross + 1
-                                count = count + 1
                             }
-                            if(this.scouter[i].hang == "Moves")
-                            {
-                                s_cross = s_cross + 0
-                                count = count + 1
-                            }
-                            
-                            
+
+                            count = count + 1
+
+
+
                         }
                     }
-                    
-                    return "Climbs " + ((s_cross/count)*100) + "% of the time "
-                    
+
+                    return "Climbs " + ((s_cross / count) * 100) + "% of the time "
+
                 },
                 e_driver: function (team) {
                     var s_cross = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
-                            if(this.scouter[i].a_line_cross == "Bad")
-                            {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].driver == "low") {
                                 s_cross = s_cross + 0
                                 count = count + 1
                             }
-                            if(this.scouter[i].a_line_cross == "Avg")
-                            {
+                            if (this.scouter[i].driver == "mid") {
                                 s_cross = s_cross + 1
                                 count = count + 1
                             }
-                            if(this.scouter[i].a_line_cross == "Good")
-                            {
+                            if (this.scouter[i].driver == "high") {
                                 s_cross = s_cross + 2
                                 count = count + 1
                             }
-                            
+
                         }
                     }
-                    if(s_cross/count > 1.5)
-                    {
+                    if (s_cross / count > 1.5) {
                         return "Good"
                     }
-                    if(s_cross/count >= 1)
-                    {
+                    if (s_cross / count >= 1) {
                         return "Meh"
                     }
-                    if(s_cross/count > 0)
-                    {
+                    if (s_cross / count > 0) {
                         return "Bad"
                     }
-                   
-                    
+
+
                 },
                 t_balls: function (team) {
-                    
-                    
+
+
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].a_shuttle_cargo
                             count = count + 1
                         }
@@ -615,29 +391,25 @@
 
                     var c_ball = 0
                     var county = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             c_ball = c_ball + this.scouter[i].shuttle_cargo
                             county = county + 1
                         }
                     }
-                    
-                    return s_ball/count + c_ball/county
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count + c_ball / county
+
+                    return s_ball / count
+
                 },
                 t_hatches: function (team) {
-                    
-                    
+
+
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].a_shuttle_hatches
                             count = count + 1
                         }
@@ -645,56 +417,86 @@
 
                     var c_ball = 0
                     var county = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             c_ball = c_ball + this.scouter[i].shuttle_hatches
                             county = county + 1
                         }
                     }
-                    
-                    return s_ball/count + c_ball/county
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count + c_ball / county
+
+                    return s_ball / count
+
                 },
                 cf_balls: function (team) {
-                    
+
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].failed_cargo
                             count = count + 1
                         }
                     }
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count
+
                 },
                 cf_hatches: function (team) {
-                    
+
                     var s_ball = 0
                     var count = 0
-                    for(var i = 0; i < this.scouter.length; i++)
-                    {
-                        if(this.scouter[i].team == team)
-                        {
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
                             s_ball = s_ball + this.scouter[i].failed_hatches
                             count = count + 1
                         }
                     }
-                    
-                    return s_ball/count
-                    
+
+                    return s_ball / count
+
                 },
-                
-                
+                comments: function (team) {
+
+                    var comments = ""
+
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            comments = comments + this.scouter[i].comments + "\n" + "\n"
+                        }
+                    }
+
+                    return comments
+
+                },
+                teamlist: function () {
+
+                    var teams = []
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        for (var k = 0; k < teams.length; k++) {
+                            if (teams[k].team == this.scouter[i].team) {
+                                count++
+                            }
+
+                        }
+                        if (count == 0) {
+                            teams.push({
+                                team: this.scouter[i].team
+                            })
+                        }
+                        count = 0
+                    }
+                    this.items = teams
+
+                },
+
             }
+            
         })
+
+       
     </script>
 </body>
 
