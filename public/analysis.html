@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>1504 Robotics</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+</head>
+
+
+
+<body>
+    <div id="app">
+        <v-app dark>
+            <v-content>
+                <v-container>
+                    <center>
+                        <h1 style="color:yellow;">1504 Analysis</h1>
+                    </center>
+
+                    <template>
+                        <v-container grid-list-md text-xs-center>
+                            <v-layout row wrap>
+                                <v-flex v-for="team in items" :key="team.team" xs4>
+                                    <v-card>
+
+                                        <v-card-title primary-title>
+                                            <div>
+                                                <h3 class="headline mb-0 text-sm-left"> Team {{team.team}}</h3> <br>
+                                                <p class="text-sm-left"> Balls Delivered: {{t_balls(team.team) +
+                                                    cr_balls(team.team)}} </p>
+                                                <p class="text-sm-left"> Hatches Delivered: {{t_hatches(team.team) +
+                                                    cr_hatches(team.team)}}
+                                                </p>
+                                                <p class="text-sm-left">{{e_hang(team.team)}} </p>
+                                                <h3 class="text-sm-left">Score: {{t_balls(team.team) +
+                                                    (2*cr_balls(team.team))+t_hatches(team.team) +
+                                                    (2*cr_hatches(team.team)) - cf_balls(team.team) -
+                                                    cf_hatches(team.team)}}</h3> <br>
+                                            </div>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <hr><br>
+                                            <h3>Darude Sandstorm</h3> <br>
+                                            <p class="text-sm-left"> Sandstorm Method:
+                                                {{s_mode(team.team)}} </p>
+                                            <p class="text-sm-left"> Crosses Line: {{s_cross(team.team)}}
+                                            </p>
+                                            <p class="text-sm-left"> Start Cargo: {{s_cargo(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Hatches:
+                                                {{s_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Balls: {{s_balls(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Hatches:
+                                                {{sr_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Balls: {{sr_balls(team.team)}} </p>
+                                            <br>
+                                            <h3>Teleop</h3> <br>
+                                            <p class="text-sm-left"> Cargo Hatches:
+                                                {{c_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Balls: {{c_balls(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Hatches:
+                                                {{cr_hatches(team.team)}} </p>
+                                            <p class="text-sm-left"> Rocket Balls: {{cr_balls(team.team)}} </p>
+                                            <p class="text-sm-left"> Cargo Failed:
+                                                {{((cf_balls(team.team)/(t_balls(team.team)+cr_balls(team.team)))*100)}}%
+                                            </p>
+                                            <p class="text-sm-left"> Hatch Failed:
+                                                {{((cf_hatches(team.team)/(t_hatches(team.team)+cr_hatches(team.team)))*100)}}%
+                                            </p>
+                                            <p class="text-sm-left"> {{c_def(team.team)}} </p>
+
+                                            <br>
+                                            <h3>End Game</h3> <br>
+                                            <p class="text-sm-left"> Climb Rate: {{e_hang(team.team)}} </p>
+                                            <p class="text-sm-left"> Drivers are {{e_driver(team.team)}} </p>
+                                            <h3 class="text-sm-left">Score: {{t_balls(team.team) +
+                                                (2*cr_balls(team.team))+t_hatches(team.team) +
+                                                (2*cr_hatches(team.team)) - cf_balls(team.team) -
+                                                cf_hatches(team.team)}}</h3>
+                                            <br>
+
+                                        </v-card-text>
+
+
+
+
+
+
+                                    </v-card>
+
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </template>
+                </v-container>
+            </v-content>
+        </v-app>
+    </div>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.0/vue-resource.js"></script>
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+
+    <script>
+        Vue.use('vue-resource');
+        new Vue({
+            el: '#app',
+            created: function () {
+                this.teamlist();
+                var self = this;
+                this.$http.get('/api').then(function (response) {
+                    console.log(response.body)
+                    var text = JSON.stringify(response.body)
+                    self.scouter = JSON.parse(text)
+                });
+
+                console.log(this.scouter);
+                setInterval(this.update, 3000);
+            },
+            data() {
+                return {
+                    dialog: false,
+                    value: "",
+                    scouter: [],
+                    items: [{
+                        team: "oh yeah yeah"
+                    }]
+                }
+            },
+            methods: {
+                update: function () {
+                    this.teamlist();
+                    this.$http.get('/api').then(function (response) {
+                        var text = JSON.stringify(response.body)
+                        self.scouter = JSON.parse(text)
+                        console.log(self.scouter)
+                    });
+                    
+                },
+                s_balls: function (team) {
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].a_shuttle_cargo
+                            count = count + 1
+                        }
+                    }
+
+                    return s_ball / count
+
+                },
+                s_mode: function (team) {
+                    var s_mode = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].drive_mode == "manual") {
+                                s_mode = s_mode + 1
+                                count = count + 1
+                            }
+                            if (this.scouter[i].drive_mode == "Autonymous") {
+                                s_mode = s_mode + 0
+                                count = count + 1
+                            }
+
+                        }
+                    }
+
+                    return ((s_mode / count) * 100) + "% Manual & " + ((1 - (s_mode / count)) * 100) +
+                        "% Autonomous"
+
+                },
+                s_cross: function (team) {
+                    var s_cross = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].a_line_cross == "Crosses Line") {
+                                s_cross = s_cross + 1
+                                count = count + 1
+                            }
+                            if (this.scouter[i].a_line_cross == "Moves") {
+                                s_cross = s_cross + 0
+                                count = count + 1
+                            }
+
+                        }
+                    }
+
+                    return "Crosses " + ((s_cross / count) * 100) + "% of the time "
+
+                },
+                s_cargo: function (team) {
+                    var s_cargo = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].a_start_object == "Hatch Panel") {
+                                s_cargo = s_cargo + 1
+                                count = count + 1
+                            }
+                            if (this.scouter[i].a_start_object == "Cargo Ball") {
+                                s_cargo = s_cargo + 0
+                                count = count + 1
+                            }
+
+                        }
+                    }
+
+                    return ((s_cargo / count) * 100) + "% Hatch Panels & " + ((1 - (s_cargo / count)) * 100) +
+                        "% Cargo Ball"
+
+                },
+                s_hatches: function (team) {
+                    var s_hatch = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_hatch = s_hatch + this.scouter[i].a_shuttle_hatches
+                            count = count + 1
+                        }
+                    }
+
+                    return s_hatch / count
+
+                },
+                sr_hatches: function (team) {
+                    var s_hatch = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_hatch = s_hatch + this.scouter[i].a_rocket_hatches
+                            count = count + 1
+                        }
+                    }
+
+                    return s_hatch / count
+
+                },
+                sr_balls: function (team) {
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].a_rocket_cargo
+                            count = count + 1
+                        }
+                    }
+
+                    return s_ball / count
+
+                },
+                c_balls: function (team) {
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].shuttle_cargo
+                            count = count + 1
+                        }
+                    }
+
+                    return s_ball / count
+
+                },
+                c_hatches: function (team) {
+                    var s_hatch = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_hatch = s_hatch + this.scouter[i].shuttle_hatches
+                            count = count + 1
+                        }
+                    }
+
+                    return s_hatch / count
+
+                },
+                cr_balls: function (team) {
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].rocket_cargo
+                            count = count + 1
+                        }
+                    }
+
+                    return s_ball / count
+
+                },
+                cr_hatches: function (team) {
+                    var s_hatch = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_hatch = s_hatch + this.scouter[i].rocket_hatches
+                            count = count + 1
+                        }
+                    }
+
+                    return s_hatch / count
+
+                },
+                c_def: function (team) {
+                    var s_cross = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].def_effective == "true") {
+                                s_cross = s_cross + 1
+                                count = count + 1
+                            }
+                            if (this.scouter[i].def_effective == "false") {
+                                s_cross = s_cross + 0
+                                count = count + 1
+                            }
+
+                        }
+                    }
+
+
+                    return "Defense effective " + ((s_cross / count) * 100) + "% of the time "
+
+
+                },
+                e_hang: function (team) {
+                    var s_cross = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].hang == "success") {
+                                s_cross = s_cross + 1
+                            }
+
+                            count = count + 1
+
+
+
+                        }
+                    }
+
+                    return "Climbs " + ((s_cross / count) * 100) + "% of the time "
+
+                },
+                e_driver: function (team) {
+                    var s_cross = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            if (this.scouter[i].driver == "low") {
+                                s_cross = s_cross + 0
+                                count = count + 1
+                            }
+                            if (this.scouter[i].driver == "mid") {
+                                s_cross = s_cross + 1
+                                count = count + 1
+                            }
+                            if (this.scouter[i].driver == "high") {
+                                s_cross = s_cross + 2
+                                count = count + 1
+                            }
+
+                        }
+                    }
+                    if (s_cross / count > 1.5) {
+                        return "Good"
+                    }
+                    if (s_cross / count >= 1) {
+                        return "Meh"
+                    }
+                    if (s_cross / count > 0) {
+                        return "Bad"
+                    }
+
+
+                },
+                t_balls: function (team) {
+
+
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].a_shuttle_cargo
+                            count = count + 1
+                        }
+                    }
+
+                    var c_ball = 0
+                    var county = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            c_ball = c_ball + this.scouter[i].shuttle_cargo
+                            county = county + 1
+                        }
+                    }
+
+                    return s_ball / count + c_ball / county
+
+                    return s_ball / count
+
+                },
+                t_hatches: function (team) {
+
+
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].a_shuttle_hatches
+                            count = count + 1
+                        }
+                    }
+
+                    var c_ball = 0
+                    var county = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            c_ball = c_ball + this.scouter[i].shuttle_hatches
+                            county = county + 1
+                        }
+                    }
+
+                    return s_ball / count + c_ball / county
+
+                    return s_ball / count
+
+                },
+                cf_balls: function (team) {
+
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].failed_cargo
+                            count = count + 1
+                        }
+                    }
+
+                    return s_ball / count
+
+                },
+                cf_hatches: function (team) {
+
+                    var s_ball = 0
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            s_ball = s_ball + this.scouter[i].failed_hatches
+                            count = count + 1
+                        }
+                    }
+
+                    return s_ball / count
+
+                },
+                comments: function (team) {
+
+                    var comments = ""
+
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        if (this.scouter[i].team == team) {
+                            comments = comments + this.scouter[i].comments + "\n" + "\n"
+                        }
+                    }
+
+                    return comments
+
+                },
+                teamlist: function () {
+
+                    var teams = []
+                    var count = 0
+                    for (var i = 0; i < this.scouter.length; i++) {
+                        for (var k = 0; k < teams.length; k++) {
+                            if (teams[k].team == this.scouter[i].team) {
+                                count++
+                            }
+
+                        }
+                        if (count == 0) {
+                            teams.push({
+                                team: this.scouter[i].team
+                            })
+                        }
+                        count = 0
+                    }
+                    this.items = teams
+
+                },
+
+            }
+            
+        })
+
+       
+    </script>
+</body>
+
+</html>
