@@ -23,19 +23,19 @@
                     <template>
                         <v-container grid-list-md text-xs-center>
                             <v-layout row wrap>
-                                <v-flex v-for="team in items" :key="team.team" xs4>
+                                <v-flex v-for="team in items" :key="team.team" md4 xs12 sm4>
                                     <v-card>
 
                                         <v-card-title primary-title>
                                             <div>
-                                                <h3 class="headline mb-0 text-sm-left"> Team {{team.team}}</h3> <br>
-                                                <p class="text-sm-left"> Balls Delivered: {{t_balls(team.team) +
+                                                <h3 class="headline mb-0 text-sm-left text-xs-center"> Team {{team.team}}</h3> <br>
+                                                <p class="text-sm-left text-xs-center"> Balls Delivered: {{t_balls(team.team) +
                                                     cr_balls(team.team)}} </p>
-                                                <p class="text-sm-left"> Hatches Delivered: {{t_hatches(team.team) +
+                                                <p class="text-sm-left text-xs-center"> Hatches Delivered: {{t_hatches(team.team) +
                                                     cr_hatches(team.team)}}
                                                 </p>
-                                                <p class="text-sm-left">{{e_hang(team.team)}} </p>
-                                                <h3 class="text-sm-left">Score: {{t_balls(team.team) +
+                                                <p class="text-sm-left text-xs-center">{{e_hang(team.team)}} </p>
+                                                <h3 class="text-sm-left text-xs-center">Score: {{t_balls(team.team) +
                                                     (2*cr_balls(team.team))+t_hatches(team.team) +
                                                     (2*cr_hatches(team.team)) - cf_balls(team.team) -
                                                     cf_hatches(team.team)}}</h3> <br>
@@ -44,38 +44,38 @@
                                         <v-card-text>
                                             <hr><br>
                                             <h3>Darude Sandstorm</h3> <br>
-                                            <p class="text-sm-left"> Sandstorm Method:
+                                            <p class="text-sm-left text-xs-center"> Sandstorm Method:
                                                 {{s_mode(team.team)}} </p>
-                                            <p class="text-sm-left"> Crosses Line: {{s_cross(team.team)}}
+                                            <p class="text-sm-left text-xs-center"> Crosses Line: {{s_cross(team.team)}}
                                             </p>
-                                            <p class="text-sm-left"> Start Cargo: {{s_cargo(team.team)}} </p>
-                                            <p class="text-sm-left"> Cargo Hatches:
+                                            <p class="text-sm-left text-xs-center"> Start Cargo: {{s_cargo(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> Cargo Hatches:
                                                 {{s_hatches(team.team)}} </p>
-                                            <p class="text-sm-left"> Cargo Balls: {{s_balls(team.team)}} </p>
-                                            <p class="text-sm-left"> Rocket Hatches:
+                                            <p class="text-sm-left text-xs-center"> Cargo Balls: {{s_balls(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> Rocket Hatches:
                                                 {{sr_hatches(team.team)}} </p>
-                                            <p class="text-sm-left"> Rocket Balls: {{sr_balls(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> Rocket Balls: {{sr_balls(team.team)}} </p>
                                             <br>
                                             <h3>Teleop</h3> <br>
-                                            <p class="text-sm-left"> Cargo Hatches:
+                                            <p class="text-sm-left text-xs-center"> Cargo Hatches:
                                                 {{c_hatches(team.team)}} </p>
-                                            <p class="text-sm-left"> Cargo Balls: {{c_balls(team.team)}} </p>
-                                            <p class="text-sm-left"> Rocket Hatches:
+                                            <p class="text-sm-left text-xs-center"> Cargo Balls: {{c_balls(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> Rocket Hatches:
                                                 {{cr_hatches(team.team)}} </p>
-                                            <p class="text-sm-left"> Rocket Balls: {{cr_balls(team.team)}} </p>
-                                            <p class="text-sm-left"> Cargo Failed:
+                                            <p class="text-sm-left text-xs-center"> Rocket Balls: {{cr_balls(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> Cargo Failed:
                                                 {{((cf_balls(team.team)/(t_balls(team.team)+cr_balls(team.team)))*100)}}%
                                             </p>
-                                            <p class="text-sm-left"> Hatch Failed:
+                                            <p class="text-sm-left text-xs-center"> Hatch Failed:
                                                 {{((cf_hatches(team.team)/(t_hatches(team.team)+cr_hatches(team.team)))*100)}}%
                                             </p>
-                                            <p class="text-sm-left"> {{c_def(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> {{c_def(team.team)}} </p>
 
                                             <br>
                                             <h3>End Game</h3> <br>
-                                            <p class="text-sm-left"> Climb Rate: {{e_hang(team.team)}} </p>
-                                            <p class="text-sm-left"> Drivers are {{e_driver(team.team)}} </p>
-                                            <h3 class="text-sm-left">Score: {{t_balls(team.team) +
+                                            <p class="text-sm-left text-xs-center"> Climb Rate: {{e_hang(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> Drivers are {{e_driver(team.team)}} </p>
+                                            <h3 class="text-sm-left text-xs-center">Score: {{t_balls(team.team) +
                                                 (2*cr_balls(team.team))+t_hatches(team.team) +
                                                 (2*cr_hatches(team.team)) - cf_balls(team.team) -
                                                 cf_hatches(team.team)}}</h3>
