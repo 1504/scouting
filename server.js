@@ -8,8 +8,10 @@ var j2xls = require('json2xls-xml')({ pretty: true });
 var address,
 	os = require('os'),
 	ifaces = os.networkInterfaces();
+
 var portNum = 80;
 var data = [];
+var oldData = [];
 var dir = './reports/';
 if (!fs.existsSync(dir)) {
 	fs.mkdirSync(dir);
@@ -17,17 +19,20 @@ if (!fs.existsSync(dir)) {
 var fileName = dir + moment().format('M;D;YYYY;H;mm;ss');
 app.use(bodyParser.json({ limit: '1000mb' }));
 app.use(
-	bodyParser.urlencoded({
-		extended: true,
-		limit: '100mb'
-	})
+    bodyParser.urlencoded({
+        extended: true,
+        limit: '100mb'
+    })
 );
 
 var fileName = dir + moment().format("M;D;YYYY;H;mm;ss");
 fs.readdirSync(dir).forEach((file) => {
     // you may want to filter these by extension, etc. to make sure they are JSON files
     if (file.includes(".json") && !file.includes(fileName)) {
-        newRecords(JSON.parse(fs.readFileSync(dir + file, 'utf8')))
+        try {
+            records = JSON.parse(fs.readFileSync(dir + file, 'utf8'))
+        } catch (e) { return; }
+        for (var i = records.length - 1; i >= 0; i--) oldData.push(records[i])
     }
 
 })
@@ -64,14 +69,21 @@ app.post('/api', function(req, res) {
     res.sendStatus(200);
 });
 app.get('/api', function(req, res) {
-	res.send(JSON.stringify(data, null, 4));
+    allData = []
+    for (var i = oldData.length - 1; i >= 0; i--) {
+        allData.push(oldData[i])
+    }
+    for (var i = data.length - 1; i >= 0; i--) {
+        allData.push(data[i])
+    }
+    res.send(JSON.stringify(allData, null, 4));
 });
 app.get('/download', function(req, res) {
-	res.writeHead(200, {
-		'Content-Type': 'application/force-download',
-		'Content-disposition': 'attachment; filename=latest.xlsx'
-	});
-	res.end(j2xls(data));
+    res.writeHead(200, {
+        'Content-Type': 'application/force-download',
+        'Content-disposition': 'attachment; filename=latest.xlsx'
+    });
+    res.end(j2xls(data));
 });
 serverStopper = app.listen(portNum, function() {});
 for (var dev in ifaces) {
