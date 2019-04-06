@@ -11,10 +11,10 @@
       </cell>
       <cell>
         <inline-selector v-model="d.color">Alliance: &nbsp;
-          <inline-selector-option value="red">
+          <inline-selector-option style="color:blue;" value="blue">
             <span class="blue">Blue</span>
           </inline-selector-option>
-          <inline-selector-option value="blue">
+          <inline-selector-option style="color:red;" value="red">
             <span class="red">Red</span>
           </inline-selector-option>
         </inline-selector>
@@ -169,7 +169,8 @@ export default {
     return {
       d: JSON.parse(JSON.stringify(require("../fields.json"))),
       menu: false,
-      default: JSON.parse(JSON.stringify(require("../fields.json")))
+      default: JSON.parse(JSON.stringify(require("../fields.json"))),
+      highlightcolor: "grey"
     };
   },
   methods: {

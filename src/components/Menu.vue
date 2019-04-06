@@ -2,7 +2,7 @@
     <div>
         <navbar>
             <icon name="bars" size="lg" @click="menu = true"></icon>
-            <h4 slot="body">Scouting 2018</h4>
+            <h4 slot="body">Scouting 2019</h4>
             <icon name="edit" size="lg" @click="viewData = true" slot="footer"></icon>
         </navbar>
         <sidelip v-model="menu" class="text-center">

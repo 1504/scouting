@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link href="css/vuetify.min.css" rel="stylesheet">
 </head>
 
 
@@ -16,10 +16,7 @@
         <v-app dark>
             <v-content>
                 <v-container>
-                    <center>
-                        <h1 style="color:yellow;">1504 Analysis</h1>
-                    </center>
-
+                    <h1 class="{text-color: yellow}"> 1504 Analysis </h1>
                     <template>
                         <v-container grid-list-md text-xs-center>
                             <v-layout row wrap>
@@ -28,17 +25,20 @@
 
                                         <v-card-title primary-title>
                                             <div>
-                                                <h3 class="headline mb-0 text-sm-left text-xs-center"> Team {{team.team}}</h3> <br>
-                                                <p class="text-sm-left text-xs-center"> Balls Delivered: {{t_balls(team.team) +
-                                                    cr_balls(team.team)}} </p>
-                                                <p class="text-sm-left text-xs-center"> Hatches Delivered: {{t_hatches(team.team) +
-                                                    cr_hatches(team.team)}}
+                                                <h3 class="headline mb-0 text-sm-left text-xs-center"> Team
+                                                    {{team.team}}</h3> <br>
+                                                <p class="text-sm-left text-xs-center"> Balls Delivered:
+                                                    {{fix(t_balls(team.team) +
+                                                    cr_balls(team.team))}} </p>
+                                                <p class="text-sm-left text-xs-center"> Hatches Delivered:
+                                                    {{fix(t_hatches(team.team) +
+                                                    cr_hatches(team.team))}}
                                                 </p>
-                                                <p class="text-sm-left text-xs-center">{{e_hang(team.team)}} </p>
-                                                <h3 class="text-sm-left text-xs-center">Score: {{t_balls(team.team) +
+                                                <p class="text-sm-left text-xs-center">{{(e_hang(team.team))}} </p>
+                                                <h3 class="text-sm-left text-xs-center">Score: {{fix(t_balls(team.team) +
                                                     (2*cr_balls(team.team))+t_hatches(team.team) +
                                                     (2*cr_hatches(team.team)) - cf_balls(team.team) -
-                                                    cf_hatches(team.team)}}</h3> <br>
+                                                    cf_hatches(team.team))}}</h3> <br>
                                             </div>
                                         </v-card-title>
                                         <v-card-text>
@@ -46,39 +46,49 @@
                                             <h3>Darude Sandstorm</h3> <br>
                                             <p class="text-sm-left text-xs-center"> Sandstorm Method:
                                                 {{s_mode(team.team)}} </p>
-                                            <p class="text-sm-left text-xs-center"> Crosses Line: {{s_cross(team.team)}}
+                                            <p class="text-sm-left text-xs-center"> Crosses Line:
+                                                {{s_cross(team.team)}}
                                             </p>
-                                            <p class="text-sm-left text-xs-center"> Start Cargo: {{s_cargo(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> Start Cargo: {{s_cargo(team.team)}}
+                                            </p>
                                             <p class="text-sm-left text-xs-center"> Cargo Hatches:
-                                                {{s_hatches(team.team)}} </p>
-                                            <p class="text-sm-left text-xs-center"> Cargo Balls: {{s_balls(team.team)}} </p>
+                                                {{fix(s_hatches(team.team))}} </p>
+                                            <p class="text-sm-left text-xs-center"> Cargo Balls:
+                                                {{fix(s_balls(team.team))}}
+                                            </p>
                                             <p class="text-sm-left text-xs-center"> Rocket Hatches:
-                                                {{sr_hatches(team.team)}} </p>
-                                            <p class="text-sm-left text-xs-center"> Rocket Balls: {{sr_balls(team.team)}} </p>
+                                                {{fix(sr_hatches(team.team))}} </p>
+                                            <p class="text-sm-left text-xs-center"> Rocket Balls:
+                                                {{fix(sr_balls(team.team))}} </p>
                                             <br>
                                             <h3>Teleop</h3> <br>
                                             <p class="text-sm-left text-xs-center"> Cargo Hatches:
-                                                {{c_hatches(team.team)}} </p>
-                                            <p class="text-sm-left text-xs-center"> Cargo Balls: {{c_balls(team.team)}} </p>
+                                                {{fix(c_hatches(team.team))}} </p>
+                                            <p class="text-sm-left text-xs-center"> Cargo Balls:
+                                                {{fix(c_balls(team.team))}}
+                                            </p>
                                             <p class="text-sm-left text-xs-center"> Rocket Hatches:
-                                                {{cr_hatches(team.team)}} </p>
-                                            <p class="text-sm-left text-xs-center"> Rocket Balls: {{cr_balls(team.team)}} </p>
+                                                {{fix(cr_hatches(team.team))}} </p>
+                                            <p class="text-sm-left text-xs-center"> Rocket Balls:
+                                                {{fix(cr_balls(team.team))}} </p>
                                             <p class="text-sm-left text-xs-center"> Cargo Failed:
                                                 {{((cf_balls(team.team)/(t_balls(team.team)+cr_balls(team.team)))*100)}}%
                                             </p>
                                             <p class="text-sm-left text-xs-center"> Hatch Failed:
                                                 {{((cf_hatches(team.team)/(t_hatches(team.team)+cr_hatches(team.team)))*100)}}%
                                             </p>
-                                            <p class="text-sm-left text-xs-center"> {{c_def(team.team)}} </p>
+                                            <p class="text-sm-left text-xs-center"> {{fix(c_def(team.team))}} </p>
 
                                             <br>
                                             <h3>End Game</h3> <br>
-                                            <p class="text-sm-left text-xs-center"> Climb Rate: {{e_hang(team.team)}} </p>
-                                            <p class="text-sm-left text-xs-center"> Drivers are {{e_driver(team.team)}} </p>
-                                            <h3 class="text-sm-left text-xs-center">Score: {{t_balls(team.team) +
+                                            <p class="text-sm-left text-xs-center"> Climb Rate: {{(e_hang(team.team))}}
+                                            </p>
+                                            <p class="text-sm-left text-xs-center"> Drivers are {{e_driver(team.team)}}
+                                            </p>
+                                            <h3 class="text-sm-left text-xs-center">Score: {{fix(t_balls(team.team) +
                                                 (2*cr_balls(team.team))+t_hatches(team.team) +
                                                 (2*cr_hatches(team.team)) - cf_balls(team.team) -
-                                                cf_hatches(team.team)}}</h3>
+                                                cf_hatches(team.team))}}</h3>
                                             <br>
 
                                         </v-card-text>
@@ -98,29 +108,29 @@
             </v-content>
         </v-app>
     </div>
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.0/vue-resource.js"></script>
-    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/vue-resource.min.js"></script>
+    <script src="js/vuetify.min.js"></script>
 
     <script>
-        Vue.use('vue-resource');
         new Vue({
             el: '#app',
             created: function () {
                 this.teamlist();
                 var self = this;
                 this.$http.get('/api').then(function (response) {
-                    console.log(response.body)
                     var text = JSON.stringify(response.body)
-                    self.scouter = JSON.parse(text)
+                    this.scouter = JSON.parse(text)
                 });
 
+                setInterval(this.update, 2000);
                 console.log(this.scouter);
-                setInterval(this.update, 3000);
+                console.log(this.blank);
             },
             data() {
                 return {
                     dialog: false,
+                    blank: "",
                     value: "",
                     scouter: [],
                     items: [{
@@ -134,9 +144,9 @@
                     this.$http.get('/api').then(function (response) {
                         var text = JSON.stringify(response.body)
                         self.scouter = JSON.parse(text)
-                        console.log(self.scouter)
+
                     });
-                    
+
                 },
                 s_balls: function (team) {
                     var s_ball = 0
@@ -209,7 +219,8 @@
                         }
                     }
 
-                    return ((s_cargo / count) * 100) + "% Hatch Panels & " + ((1 - (s_cargo / count)) * 100) +
+                    return ((s_cargo / count) * 100) + "% Hatch Panels & " + ((1 - (s_cargo / count)) *
+                        100) +
                         "% Cargo Ball"
 
                 },
@@ -491,12 +502,15 @@
                     this.items = teams
 
                 },
+                fix: function (value) {
+
+                    return Intl.NumberFormat().format(value)
+
+                }
 
             }
-            
-        })
 
-       
+        })
     </script>
 </body>
 
