@@ -1,5 +1,17 @@
-#Han 4/6/19
-#may have to manually strip the data to remove the extra curly braces try writing a method with .strip() to remove in the future
+#Han 4/11/19
+#added the .strip method, remember to take the spaghetti directly from the api page and save it with ANSI encoding in a .txt file
+
+
+def strip_brackets(inputFile):
+    file = open(inputFile, "r+")
+    temp = file.read()
+    a = temp.strip("[")
+    b = a.strip("]")
+    file.close()
+    f = open(inputFile, "w")
+    f.write(b)
+    f.close()
+
 
 def read_data(inputFile):
     total = ()
@@ -36,11 +48,14 @@ def remove_duplicates(outputFile, inputFile,  matchThreshold):
     f.close()
 
 
-inputFile = str(input("Enter an input file to read from: "))
-outputFile = str(input("Enter an output file to write to: "))
-matchThreshold = int(input("Enter match limit: "))
-remove_duplicates(outputFile, inputFile, matchThreshold)
-
+n = ""
+while(n != "q") and (n != "Q") and (n != "quit") and (n != "Quit"):
+    inputFile = str(input("Enter an input file to read from: "))
+    outputFile = str(input("Enter an output file to write to: "))
+    matchThreshold = int(input("Enter match limit: "))
+    strip_brackets(inputFile)
+    remove_duplicates(outputFile, inputFile, matchThreshold)
+    n = str(input("Would you like to clean other files? Enter Q to quit: "))
 
 
 
