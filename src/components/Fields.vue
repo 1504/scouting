@@ -35,29 +35,37 @@
                 </inline-selector>
             </cell>
             <cell>
-                Auton switch cubes &nbsp;
-                <input-number :min="0" v-model="d.a_switch_cubes" :max="20" />
+                <inline-selector v-model="d.a_shoot_spot">
+                    Auton Robot Shooting Spot: &nbsp;
+                <inline-selector-option value="Lower">Lower</inline-selector-option>
+                <inline-selector-option value="Outer">Outer</inline-selector-option>
+                <inline-selector-option value="Inner">Inner</inline-selector-option>
             </cell>
             <cell>
-                Auton scale cubes &nbsp;
-                <input-number :min="0" v-model="d.a_scale_cubes" :max="20" />
+                Auton shoot accuracy &nbsp;
+                <input-number :min="0" v-model="d.a_scale_cubes" :max="100" />
             </cell>
             <cell>
-                Auton vault cubes &nbsp;
-                <input-number :min="0" v-model="d.a_vault_cubes" :max="20" />
+                Auton type &nbsp;
+                <input-text v-model="d.a_type" placeholder="Auton Type" type="text" />
             </cell>
             <cell>
-                Auton placing quality (1-10) &nbsp;
-                <input-number :min="0" v-model="d.a_place_quality" :max="10" />
+                Auton Behavior &nbsp;
+                <input-text v-model="d.a_behavior" placeholder="Auton Behavior" type="text" />
+            </cell>
+            <cell>
+                Auton End Behavior &nbsp;
+                    <input-text v-model="d.a_end_behavior" placeholder="Auton End Behavior" type="text" />
             </cell>
         </group>
         <group-title>Teleop</group-title>
         <group>
             <cell>
-                <inline-selector v-model="d.pickup" multiple>
-                    Cube collection: &nbsp;
-                    <inline-selector-option value="loadingstation">Station</inline-selector-option>
-                    <inline-selector-option value="floor">Floor</inline-selector-option>
+                <inline-selector v-model="d.t_spot" multiple>
+                    Shooting Area: &nbsp;
+                    <inline-selector-option value="Lower">Lower</inline-selector-option>
+                    <inline-selector-option value="Outer">Outer</inline-selector-option>
+                    <inline-selector-option value="Inner">Inner</inline-selector-option>
                 </inline-selector>
             </cell>
             <cell>
