@@ -69,31 +69,36 @@
                 </inline-selector>
             </cell>
             <cell>
-                Switch cubes &nbsp;
-                <input-number :min="0" v-model="d.switch_cubes" :max="20" />
+                How does it pick up the ball? &nbsp;
+                    <input-text v-model="d.t_method" placeholder="Method" type="text" />
             </cell>
             <cell>
-                Scale cubes &nbsp;
-                <input-number :min="0" v-model="d.scale_cubes" :max="20" />
+                Ball Capacity &nbsp;
+                <input-number :min="0" v-model="d.scale_cubes" :max="5" />
             </cell>
             <cell>
-                Switch cubes failed &nbsp;
-                <input-number :min="0" v-model="d.switch_cubes_failed" :max="20" />
+                <inline-selector v-model="d.t_panel_rot" multiple>
+                    Does it spin the control panel? &nbsp;
+                    <inline-selector-option value=false>No</inline-selector-option>
+                    <inline-selector-option value=true>Yes</inline-selector-option>
             </cell>
             <cell>
-                Scale cubes failed &nbsp;
-                <input-number :min="0" v-model="d.scale_cubes_failed" :max="20" />
+                <inline-selector v-model="d.t_panel_color" multiple>
+                    Does  it sipn to the right color? &nbsp;
+                    <inline-selector-option value=false>No</inline-selector-option>
+                    <inline-selector-option value=true>Yes</inline-selector-option>
+                
             </cell>
             <cell>
-                Cubes placed for vault &nbsp;
-                <input-number :min="0" v-model="d.vault_cubes" :max="20" />
+                Ball accuracy &nbsp;
+                <input-number :min="0" v-model="d.t_acc" :max="100" />
             </cell>
             <cell>
-                <checkbox v-model="d.defensive">Defensive</checkbox>
+                <checkbox v-model="t.defend">Defensive</checkbox>
             </cell>
             <cell>
-                Cubes on opponent switch &nbsp;
-                <input-number :min="0" v-model="d.def_cubes" :max="20" />
+                Route &nbsp;
+                <input-text  v-model="d.t_route" placeholder="Route" type="text" />
             </cell>
             <cell>
                 Fouls &nbsp;
@@ -119,19 +124,24 @@
             </cell>
             <cell>
                 Time to hang (s) &nbsp;
-                <input-number :min="0" v-model="d.time_to_hang" :step="5" :max="30"></input-number>
+                <input-number :min="0" v-model="d.e_time_hang" :step="5" :max="30"></input-number>
             </cell>
             <cell>
-                <checkbox v-model="d.hanged_on_other">Hangs on other robot</checkbox>
+                <checkbox v-model="d.e_h_allow">Allows other robots to hang</checkbox>
             </cell>
             <cell>
-                Carries (#) robots &nbsp;
-                <input-number :min="0" v-model="d.carry_number" :max="20" />
+                <inline-selector v-model="d.e_h_side" multiple>
+                    What side did they hang on? &nbsp;
+                    <inline-selector-option value=left>Left</inline-selector-option>
+                    <inline-selector-option value="middle">Middle</inline-selector-option>
+                    <inline-selector-option value="Right">Rght</inline-selector-option>
+                </inline-selector>
             </cell>
             <cell>
-                Number of other robots hanging &nbsp;
-                <input-number :min="0" v-model="d.endrobothangtotal" :max="2" />
+                <checkbox v-model="d.e_balance">Does the robot balance?</checkbox>
             </cell>
+            <cell>
+                <checkbox v-model="e_park">Does the robot park</checkbox>
         </group>
         <group-title>Humans</group-title>
         <group>
