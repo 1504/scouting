@@ -68,6 +68,12 @@ As of right now, this has to be rewritten every year. I never came up with a per
 some interesting code for it my junior and senior year. At this moment, the only code that handles data analytics is
 accessing `/api` on the server. This will dump all of the data collected so far in JSON format.
 
+So, the way to implement this is to write any basic HTML file, with whatever dependencies you need referenced locally. There is no need for any complex NPM dependency resolution. Once you have verified it works locally (for example, opening your analysis HTML file on your laptop and having it send a GET request to the server IP address running somewhere else), you want to save this in the root of this Github repository. 
+
+In order to have this actually be accessible during competition, first make sure that someone has built the dist directory. The server is configured to serve all of the files in /dist. Then, drag your analytics code into /dist (note that this will have to be done each time dist is rebuilt through npm). Say you have an "analytics" folder, with an index.html inside. Drag this entire folder into the dist directory, and then when running the server, analytics will be found at SERVER_IP/analytics.
+
+(If the above steps don't work for some reasons or if you have more questions, make a Github issue with the error message, and how to reproduce the error, and I can take a look.)
+
 (Hint: This would be a good project for an extra programmer or two to implement, as they can do it how they want, and
 the data is easily accesible.)
 
