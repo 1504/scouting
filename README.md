@@ -16,6 +16,14 @@ npm install
 
 That's it. No really, the one command will fetch all 25,000 dependencies and install em.
 
+### Before Developing
+Make sure you have the server running (the backend system) before trying to run the below commands. The commands below are specfically for the FRONTEND part of the application. To run the server,
+
+```node
+(sudo) node server.js
+```
+You might need the sudo if you are running on Linux, as the server attempts to bind to port 80, which is the HTTP port.
+
 ### Compiles and hot-reloads for development
 
 ```node
