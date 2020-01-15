@@ -2,12 +2,12 @@
     <div>
         <navbar>
             <icon name="bars" size="lg" @click="menu = true"></icon>
-            <h4 slot="body">Scouting 2018</h4>
+            <h4 slot="body">Scouting 2020</h4>
             <icon name="edit" size="lg" @click="viewData = true" slot="footer"></icon>
         </navbar>
         <sidelip v-model="menu" class="text-center">
             <group-title class="bg-primary" :style="{height: '8rem', padding: '2rem 1rem'}">
-                <h2>Scouting 2018</h2>
+                <h2>Scouting 2020</h2>
                 <h4>Created by Arham Jain</h4>
             </group-title>
             <cell>

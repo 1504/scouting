@@ -28,77 +28,67 @@
                 </inline-selector>
             </cell>
             <cell>
-                <inline-selector v-model="d.a_movement">
-                    Movement: &nbsp;
-                    <inline-selector-option value="moves">Moves</inline-selector-option>
-                    <inline-selector-option value="cross">Crosses Line</inline-selector-option>
+                <checkbox v-model="d.a_movement">Moves off line</checkbox>
+            </cell>
+            <cell>
+                <checkbox v-model="d.a_score">The robot scores balls</checkbox>
+            </cell>
+            <cell>
+                <inline-selector v-model="d.a_port" multiple>
+                    Ball Port Scored In: &nbsp;
+                    <inline-selector-option value="high">High</inline-selector-option>
+                    <inline-selector-option value="low">Low</inline-selector-option>
                 </inline-selector>
             </cell>
             <cell>
-                <inline-selector v-model="d.a_shoot_spot">
-                    Auton Robot Shooting Spot: &nbsp;
-                <inline-selector-option value="Lower">Lower</inline-selector-option>
-                <inline-selector-option value="Outer">Outer</inline-selector-option>
-                <inline-selector-option value="Inner">Inner</inline-selector-option>
-            </cell>
-            <cell>
-                Auton shoot accuracy &nbsp;
-                <input-number :min="0" v-model="d.a_scale_cubes" :max="100" />
-            </cell>
-            <cell>
-                Auton type &nbsp;
-                <input-text v-model="d.a_type" placeholder="Auton Type" type="text" />
-            </cell>
-            <cell>
-                Auton Behavior &nbsp;
-                <input-text v-model="d.a_behavior" placeholder="Auton Behavior" type="text" />
-            </cell>
-            <cell>
-                Auton End Behavior &nbsp;
-                    <input-text v-model="d.a_end_behavior" placeholder="Auton End Behavior" type="text" />
+                Auton Score Accuracy &nbsp;
+                <input-number :min="0" v-model="d.a_accuracy" :max="100" />
             </cell>
         </group>
         <group-title>Teleop</group-title>
         <group>
             <cell>
-                <inline-selector v-model="d.t_spot" multiple>
-                    Shooting Area: &nbsp;
-                    <inline-selector-option value="Lower">Lower</inline-selector-option>
-                    <inline-selector-option value="Outer">Outer</inline-selector-option>
-                    <inline-selector-option value="Inner">Inner</inline-selector-option>
+                <inline-selector v-model="d.t_pickup" multiple>
+                    Ball collection: &nbsp;
+                    <inline-selector-option value="loadingstation">Station</inline-selector-option>
+                    <inline-selector-option value="floor">Floor</inline-selector-option>
                 </inline-selector>
             </cell>
             <cell>
-                How does it pick up the ball? &nbsp;
-                    <input-text v-model="d.t_method" placeholder="Method" type="text" />
-            </cell>
-            <cell>
                 Ball Capacity &nbsp;
-                <input-number :min="0" v-model="d.scale_cubes" :max="5" />
+                <input-number :min="0" v-model="d.t_ball_cap" :max="10" />
             </cell>
             <cell>
-                <inline-selector v-model="d.t_panel_rot" multiple>
-                    Does it spin the control panel? &nbsp;
-                    <inline-selector-option value=false>No</inline-selector-option>
-                    <inline-selector-option value=true>Yes</inline-selector-option>
+                <inline-selector v-model="d.t_port" multiple>
+                    Ball Port Scored In: &nbsp;
+                    <inline-selector-option value="high">High</inline-selector-option>
+                    <inline-selector-option value="low">Low</inline-selector-option>
+                </inline-selector>
             </cell>
             <cell>
-                <inline-selector v-model="d.t_panel_color" multiple>
-                    Does  it sipn to the right color? &nbsp;
-                    <inline-selector-option value=false>No</inline-selector-option>
-                    <inline-selector-option value=true>Yes</inline-selector-option>
-                
+                Ball Score Accuracy &nbsp;
+                <input-number :min="0" v-model="d.t_accuracy" :max="100" />
             </cell>
             <cell>
-                Ball accuracy &nbsp;
-                <input-number :min="0" v-model="d.t_acc" :max="100" />
+                <checkbox v-model="d.t_trench_run">Robot can do Trench Run</checkbox>
             </cell>
             <cell>
-                <checkbox v-model="t.defend">Defensive</checkbox>
+                Trench Runs Made &nbsp;
+                <input-number :min="0" v-model="d.t_trench_runs_made" :max="50" />
             </cell>
             <cell>
-                Route &nbsp;
-                <input-text  v-model="d.t_route" placeholder="Route" type="text" />
+                <checkbox v-model="d.t_through_generator">Robot moves through Generator</checkbox>
+            </cell>
+            <cell>
+                <checkbox v-model="d.t_cp_spin_2_win">Robot can spin control panel</checkbox>
+            </cell>
+            <cell>
+                Control Panel Spins &nbsp;
+                <input-number :min="0" v-model="d.t_cp_spins" :max="50" />
+            </cell>
+
+            <cell>
+                <checkbox v-model="d.defensive">Defensive</checkbox>
             </cell>
             <cell>
                 Fouls &nbsp;
@@ -116,7 +106,7 @@
         <group-title>End Game</group-title>
         <group>
             <cell>
-                <inline-selector v-model="d.hang">
+                <inline-selector v-model="d.e_hang">
                     Hang: &nbsp;
                     <inline-selector-option value="attempt">Attempt</inline-selector-option>
                     <inline-selector-option value="success">Success</inline-selector-option>
@@ -124,24 +114,23 @@
             </cell>
             <cell>
                 Time to hang (s) &nbsp;
-                <input-number :min="0" v-model="d.e_time_hang" :step="5" :max="30"></input-number>
+                <input-number :min="0" v-model="d.time_to_hang" :step="5" :max="30"></input-number>
             </cell>
             <cell>
-                <checkbox v-model="d.e_h_allow">Allows other robots to hang</checkbox>
-            </cell>
-            <cell>
-                <inline-selector v-model="d.e_h_side" multiple>
-                    What side did they hang on? &nbsp;
-                    <inline-selector-option value=left>Left</inline-selector-option>
+                <inline-selector v-model="d.e_hang_loc">
+                    Hang Side: &nbsp;
+                    <inline-selector-option value="close">Close</inline-selector-option>
                     <inline-selector-option value="middle">Middle</inline-selector-option>
-                    <inline-selector-option value="Right">Rght</inline-selector-option>
+                    <inline-selector-option value="far">Far</inline-selector-option>
                 </inline-selector>
             </cell>
             <cell>
-                <checkbox v-model="d.e_balance">Does the robot balance?</checkbox>
+                Number of other robots hanging &nbsp;
+                <input-number :min="0" v-model="d.e_robot_hang_total" :max="2" />
             </cell>
             <cell>
-                <checkbox v-model="e_park">Does the robot park</checkbox>
+                <checkbox v-model="d.e_balanced">Generator Switch Balanced</checkbox>
+            </cell>
         </group>
         <group-title>Humans</group-title>
         <group>
