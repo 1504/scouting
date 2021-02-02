@@ -10,5 +10,14 @@ module.exports = {
                 secure: false
             }
         }
+    },
+    pages: {
+        analysis: {
+            entry: 'src/pages/analysis/analysis.js',
+            template: 'public/analysis.html',
+            filename: 'analysis.html',
+            title: 'Analysis',
+            chunks: ['chunk-vendors', 'chunk-common', 'analysis']
+        }
     }
 };
