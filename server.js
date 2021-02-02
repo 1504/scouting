@@ -12,6 +12,7 @@ var portNum = 80;
 var data = [];
 var oldData = [];
 var dir = './reports/';
+var teams_dir = './teams/';
 if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
@@ -48,12 +49,16 @@ function newRecords(records) {
         data.push(records[i])
         console.log(records[i])
     }
+
     fs.writeFile(fileName + ".xlsx", j2xls(data), 'binary', function(err) {
         error(err);
     });
     fs.writeFile(fileName + ".json", JSON.stringify(data, null, 4), 'binary', function(err) {
         error(err);
     });
+    fs.open(teams_dir + records[0].team + ".json", 'w', function(err, file) {
+        if (err) throw err;
+    }) 
 }
 app.use(cors());
 app.use('/', express.static(__dirname + '/dist'));
