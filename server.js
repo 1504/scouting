@@ -16,6 +16,10 @@ var teams_dir = './teams/';
 if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
+if (!fs.existsSync(teams_dir)) {
+    fs.mkrdirSync(teams_dir);
+}
+
 var fileName = dir + moment().format('M;D;YYYY;H;mm;ss');
 app.use(bodyParser.json({ limit: '1000mb' }));
 app.use(
@@ -44,6 +48,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 function newRecords(records) {
+    var team_data;
+    var team_num = records[0].team;
+
     for (var i = records.length - 1; i >= 0; i--) {
         convert(records[i])
         data.push(records[i])
@@ -56,7 +63,21 @@ function newRecords(records) {
     fs.writeFile(fileName + ".json", JSON.stringify(data, null, 4), 'binary', function(err) {
         error(err);
     });
-    fs.open(teams_dir + records[0].team + ".json", 'w', function(err, file) {
+    /* 
+    The code below writes to the json file of the corresponding team
+    */
+    if (!fs.existsSync(teams_dir + team_num + ".json")) {
+        var team_data = fs.readFileSync(teams_dir + 'template.json', 'utf-8');
+        team_data.team_number = team_num;
+    } else {
+        var team_data = fs.readFileSync(teams_dir + team_num + '.json', 'utf-8');
+    }
+    team_data = JSON.parse(team_data);
+    /*
+    The code below sets the variables in the json to info from the submission forms
+    */
+    team_data.match_history
+    fs.writeFileSync(teams_dir + team_num + ".json", team_data, function(err) {
         if (err) throw err;
     }) 
 }
@@ -89,6 +110,10 @@ app.get('/download', function(req, res) {
     });
     res.end(j2xls(data));
 });
+app.get('/search', function(req, res) {
+    var query = req.body['SearchBar'];
+});
+
 serverStopper = app.listen(portNum, function() {});
 for (var dev in ifaces) {
     var iface = ifaces[dev].filter(function(details) {

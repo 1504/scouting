@@ -21,3 +21,4 @@ package-lock.json
 *.sw*
 
 reports/
+teams/
