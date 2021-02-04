@@ -20,5 +20,5 @@ package-lock.json
 *.sln
 *.sw*
 
-reports/
 teams/
+reports/
